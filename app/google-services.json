@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "735054918884",
+    "project_id": "sudas-1b8ee",
+    "storage_bucket": "sudas-1b8ee.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:735054918884:android:60e90889ccf7351962e8f1",
+        "android_client_info": {
+          "package_name": "com.example.sudas"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "735054918884-mt72v4r5d6q78orutbv46ec9qhgqnjqq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.sudas",
+            "certificate_hash": "d8ea6204faca00e523ad6a69d7a336c7cc6c8d67"
+          }
+        },
+        {
+          "client_id": "735054918884-j7vmg04qv33qtt0mcafti58ikpej9afd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAJnnPL1yi8-5s_QjCxwqSfTdphVhafR0g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "735054918884-j7vmg04qv33qtt0mcafti58ikpej9afd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
