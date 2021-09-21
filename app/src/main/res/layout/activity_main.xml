@@ -23,4 +23,11 @@
         android:onClick="logoutUser"
         />
 
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/settings"
+        android:text="settings"
+        android:onClick="goToSettings"/>
+
   </androidx.constraintlayout.widget.ConstraintLayout>

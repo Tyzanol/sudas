@@ -76,7 +76,7 @@ public class RegistrationActivity extends AppCompatActivity {
                             Toast.makeText(RegistrationActivity.this, "sign up error", Toast.LENGTH_SHORT).show();
                         } else {
                             String userId =  mAuth.getCurrentUser().getUid();
-                            DatabaseReference currentUserDb = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("Users").child(radioButton.getText().toString()).child(userId).child("Name");
+                            DatabaseReference currentUserDb = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("users").child(radioButton.getText().toString()).child(userId).child("name");
                             currentUserDb.setValue(name);
                         }
                     }
