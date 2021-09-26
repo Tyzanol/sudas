@@ -38,7 +38,8 @@
             android:textSize="40sp"
             android:textColor="@android:color/white"
             android:background="#E339"
-            android:gravity="center"
+            android:gravity="center|left"
+            android:paddingLeft="20sp"
             tools:text="@string/hello_world"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
