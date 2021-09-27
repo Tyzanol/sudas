@@ -9,15 +9,17 @@
         <entry key="app/src/main/res/drawable/profile_default_background.xml" value="0.16296296296296298" />
         <entry key="app/src/main/res/layout-w1240dp/activity_choose_login_registration.xml" value="0.12583668005354753" />
         <entry key="app/src/main/res/layout-w936dp/activity_choose_login_registration.xml" value="0.146875" />
+        <entry key="app/src/main/res/layout/activity_chat.xml" value="0.19427083333333334" />
         <entry key="app/src/main/res/layout/activity_choose_login_registration.xml" value="0.19583333333333333" />
         <entry key="app/src/main/res/layout/activity_login.xml" value="0.11911231884057971" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
-        <entry key="app/src/main/res/layout/activity_matches.xml" value="0.4368955244626065" />
+        <entry key="app/src/main/res/layout/activity_matches.xml" value="0.1762208067940552" />
         <entry key="app/src/main/res/layout/activity_my.xml" value="0.171225937183384" />
         <entry key="app/src/main/res/layout/activity_registration.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_settings.xml" value="0.1" />
         <entry key="app/src/main/res/layout/buttons.xml" value="0.171225937183384" />
         <entry key="app/src/main/res/layout/item.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_chat.xml" value="0.11764705882352941" />
         <entry key="app/src/main/res/layout/item_matches.xml" value="0.1" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.16296296296296298" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.16296296296296298" />

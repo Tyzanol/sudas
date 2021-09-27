@@ -94,10 +94,6 @@ public class MatchesActivity extends AppCompatActivity {
 
                     Matches obj = new Matches(userId, name, profileImageUrl);
                     resultMatches.add(obj);
-                    resultMatches.add(obj);
-                    resultMatches.add(obj);
-                    resultMatches.add(obj);
-                    resultMatches.add(obj);
                     mMatchesAdapter.notifyDataSetChanged();
                 }
             }

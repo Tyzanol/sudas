@@ -106,8 +106,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    usersDb.child(snapshot.getKey()).child("connections").child("matches").child(currentUserId).setValue("true");
-                    usersDb.child(currentUserId).child("connections").child("matches").child(snapshot.getKey()).setValue("true");
+                    String key = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("chats").push().getKey();
+                    usersDb.child(snapshot.getKey()).child("connections").child("matches").child(currentUserId).child("chatId").setValue(key);
+                    usersDb.child(currentUserId).child("connections").child("matches").child(snapshot.getKey()).child("chatId").setValue(key);
                 }
             }
 
@@ -203,6 +204,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void goToMatches(View view) {
         Intent intent = new Intent(MainActivity.this, MatchesActivity.class);
+//        intent.putExtra("matchId", )
         startActivity(intent);
         return;
     }
