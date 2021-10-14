@@ -31,7 +31,7 @@ public class RegistrationActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private FirebaseAuth.AuthStateListener firebaseAuthStateListener;
 
-    private RadioGroup mRadioGroup;
+    private RadioGroup mRadioGroup, mRadioGroupType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +56,7 @@ public class RegistrationActivity extends AppCompatActivity {
         mEmail = (EditText) findViewById(R.id.email);
         mPassword = (EditText) findViewById(R.id.password);
         mRadioGroup = (RadioGroup) findViewById(R.id.radioGroup);
+        mRadioGroupType = (RadioGroup) findViewById(R.id.radioGroupType);
         mName = (EditText) findViewById(R.id.name);
 
         mRegister.setOnClickListener(new View.OnClickListener() {
@@ -66,6 +67,13 @@ public class RegistrationActivity extends AppCompatActivity {
                 if (radioButton.getText() == null) {
                     return;
                 }
+
+                int selectedTypeId = mRadioGroup.getCheckedRadioButtonId();
+                final RadioButton radioButtonType = (RadioButton) findViewById(selectedId);
+                if (radioButton.getText() == null) {
+                    return;
+                }
+
 
                 final String email = mEmail.getText().toString();
                 final String password = mPassword.getText().toString();
@@ -83,6 +91,7 @@ public class RegistrationActivity extends AppCompatActivity {
                             Map userInfo = new HashMap();
                             userInfo.put("name", name);
                             userInfo.put("gender", radioButton.getText().toString());
+                            userInfo.put("type", radioButtonType.getText().toString());
                             userInfo.put("profileImageUrl", "default");
                             currentUserDb.updateChildren(userInfo);
                         }

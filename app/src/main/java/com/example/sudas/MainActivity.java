@@ -126,8 +126,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private String userGender;
-    private String oppositeGender;
+    private String userGender, userType;
+    private String oppositeGender, oppositeUserType;
 
     public void checkUserPreferences() {
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -136,17 +136,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    if (snapshot.child("gender").getValue() != null) {
-                        userGender = snapshot.child("gender").getValue().toString();
-                        switch (userGender) {
-                            case "male":
-                                oppositeGender = "female";
+                    if (snapshot.child("userType").getValue() != null) {
+                        userType = snapshot.child("userType").getValue().toString();
+                        switch (userType) {
+                            case "recruiter":
+                                oppositeUserType = "talent";
                                 break;
-                            case "female":
-                                oppositeGender = "male";
+                            case "talent":
+                                oppositeUserType = "recruiter";
                                 break;
                         }
-                        getOppositeGenderUsers();
+                        getOppositeTypeUsers();
                     }
                 }
             }
@@ -157,7 +157,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void getOppositeGenderUsers() {
+    public void getOppositeTypeUsers() {
         DatabaseReference usersDb = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("users");
         usersDb.addChildEventListener(new ChildEventListener() {
             @Override
@@ -165,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
                 if ((snapshot.exists()) &&
                         !snapshot.child("connections").child("match").hasChild(currentUserId) &&
                         !snapshot.child("connections").child("noMatch").hasChild(currentUserId) &&
-                        snapshot.child("gender").getValue().toString().equals(oppositeGender)
+                        snapshot.child("userType").getValue().toString().equals(oppositeUserType)
                 ) {
                     String profileImageUrl = "default";
                     if (!snapshot.child("profileImageUrl").getValue().equals("default")) {
