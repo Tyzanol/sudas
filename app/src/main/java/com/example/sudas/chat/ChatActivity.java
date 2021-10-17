@@ -33,7 +33,7 @@ public class ChatActivity extends AppCompatActivity {
     private RecyclerView.Adapter mChatAdapter;
     private RecyclerView.LayoutManager mChatLayoutManager;
 
-    private String currentUserID, matchId, chatId;
+    private String currentUserID, matchId, chatId, positionId;
 
     private EditText mSendEditText;
     private Button mSendButton;
@@ -46,6 +46,7 @@ public class ChatActivity extends AppCompatActivity {
         setContentView(R.layout.activity_chat);
 
         matchId = getIntent().getExtras().getString("matchId");
+        positionId = getIntent().getExtras().getString("positionId");
 
         currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
         mDatabaseUser = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("users").child(currentUserID).child("connections").child("matches").child(matchId).child("chatId");

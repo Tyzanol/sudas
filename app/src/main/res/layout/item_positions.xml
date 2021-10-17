@@ -3,35 +3,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="20sp"
-    android:orientation="horizontal">
-    <ImageView
-        android:layout_width="75sp"
-        android:layout_height="75sp"
-        android:id="@+id/matchImage"
-        android:src="@mipmap/ic_launcher"/>
-    <LinearLayout
-        android:paddingLeft="20sp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_gravity="center">
+    android:background="#ff0f0f"
+    android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Match Name"
+            android:text="Position Title"
             android:layout_gravity="center"
-            android:id="@+id/matchName"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Match ID"
-            android:layout_gravity="center"
-            android:id="@+id/matchId"/>
+            android:id="@+id/positionTitle"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Position ID"
             android:layout_gravity="center"
             android:id="@+id/positionId"/>
-    </LinearLayout>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Recruiter ID"
+            android:layout_gravity="center"
+            android:id="@+id/recruiterId"/>
 </LinearLayout>

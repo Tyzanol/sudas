@@ -36,7 +36,7 @@ import java.util.Map;
 public class SettingsActivity extends AppCompatActivity {
 
     private EditText mNameField, mPhoneField, mGender;
-    private Button mBack, mConfirm, mAddPosition;
+    private Button mBack, mConfirm;
     private ImageView mProfileImage;
     private FirebaseAuth mAuth;
     private DatabaseReference mUserDb;
@@ -48,14 +48,12 @@ public class SettingsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-//        String userGender = getIntent().getExtras().getString("userGender");
         mNameField = (EditText) findViewById(R.id.name);
 //        mPhoneField = (EditText) findViewById(R.id.phone);
 
         mProfileImage = (ImageView) findViewById(R.id.profileImage);
 
         mBack = (Button) findViewById(R.id.back);
-        mAddPosition = (Button) findViewById(R.id.addPosition);
         mConfirm = (Button) findViewById(R.id.confirm);
 
         mAuth = FirebaseAuth.getInstance();
@@ -85,14 +83,6 @@ public class SettingsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 finish();
                 return;
-            }
-        });
-
-        mAddPosition.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(SettingsActivity.this, AddPositionActivity.class);
-                startActivity(intent);
             }
         });
     }

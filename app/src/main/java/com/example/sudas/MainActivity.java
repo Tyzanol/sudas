@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -15,7 +14,7 @@ import com.example.sudas.cards.arrayAdapter;
 import com.example.sudas.cards.cards;
 import com.example.sudas.matches.MatchesActivity;
 import com.example.sudas.positions.Position;
-import com.example.sudas.positions.positionAdapter;
+import com.example.sudas.positions.positionCardAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -28,16 +27,16 @@ import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
 //    private ArrayList<String> al;
 private com.example.sudas.cards.arrayAdapter arrayAdapter;
-    private positionAdapter positionAdapter;
+    private positionCardAdapter positionAdapter;
     private int i;
     private FirebaseAuth mAuth;
-    private String currentUserId, mUserType;
+    private String currentUserId, mUserType, mSelectedPositionId;
+    ;
     ListView listView;
     List<cards> rowItems;
     List<Position> positionRowItems;
@@ -59,7 +58,7 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
         arrayAdapter = new arrayAdapter(this, R.layout.item, rowItems);
 
         positionRowItems = new ArrayList<Position>();
-        positionAdapter = new positionAdapter(this, R.layout.item_position, positionRowItems);
+        positionAdapter = new positionCardAdapter(this, R.layout.item_position_card, positionRowItems);
         checkUserPreferences();
 
         SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
@@ -91,9 +90,16 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
             @Override
             public void removeFirstObjectInAdapter() {
                 // this is the simplest way to delete an object from the Adapter (/AdapterView)
-                Log.d("LIST", "removed object!");
-                rowItems.remove(0);
-                arrayAdapter.notifyDataSetChanged();
+                switch (mUserType) {
+                    case "talent":
+                        positionRowItems.remove(0);
+                        positionAdapter.notifyDataSetChanged();
+                        break;
+                    case "recruiter":
+                        rowItems.remove(0);
+                        arrayAdapter.notifyDataSetChanged();
+                        break;
+                }
             }
 
             @Override
@@ -103,6 +109,7 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
                         Position posObj = (Position) dataObject;
                         String recruiterId = posObj.getRecruiterId();
                         String positionId = posObj.getPositionId();
+                        mSelectedPositionId = positionId;
                         usersDb.child(recruiterId).child("connections").child(positionId).child("noInterest").child(currentUserId).setValue("true");
                         break;
                     case "recruiter":
@@ -120,8 +127,8 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
                         Position posObj = (Position) dataObject;
                         String recruiterId = posObj.getRecruiterId();
                         String positionId = posObj.getPositionId();
-                        usersDb.child(recruiterId).child("connections").child(positionId).child("interested").child(currentUserId).setValue("true");
-                        isMatch(userId);
+                        usersDb.child(recruiterId).child("connections").child("interested").child(currentUserId).child(positionId).setValue("true");
+                        isPositionMatch(recruiterId, positionId);
                         break;
                     case "recruiter":
                         cards obj = (cards) dataObject;
@@ -152,6 +159,28 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
 
     }
 
+    private void isPositionMatch(String recruiterId, String positionId) {
+        DatabaseReference currentUserConnectionDb = usersDb.child(recruiterId).child("connections").child("interested").child(currentUserId).child(positionId);
+        currentUserConnectionDb.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.exists()) {
+                    String key = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("chats").push().getKey();
+                    usersDb.child(recruiterId).child("connections").child("matches").child(currentUserId).child("chatId").setValue(key);
+                    usersDb.child(recruiterId).child("connections").child("matches").child(currentUserId).child("positionId").setValue(snapshot.getKey());
+                    usersDb.child(currentUserId).child("connections").child("matches").child(recruiterId).child("chatId").setValue(key);
+                    usersDb.child(currentUserId).child("connections").child("matches").child(recruiterId).child("positionId").setValue(snapshot.getKey());
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+
+    }
+
     private void isMatch(String userId) {
         DatabaseReference currentUserConnectionDb = usersDb.child(currentUserId).child("connections").child("interested").child(userId);
         currentUserConnectionDb.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -159,6 +188,12 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
                     String key = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("chats").push().getKey();
+
+//                    usersDb.child(snapshot.getKey()).child("connections").child("matches").child(currentUserId).child("chatId").setValue(key);
+//                    usersDb.child(snapshot.getKey()).child("connections").child("matches").child(currentUserId).child("positionId").setValue(snapshot.getKey());
+//                    usersDb.child(currentUserId).child("connections").child("matches").child(snapshot.getKey()).child("chatId").setValue(key);
+//                    usersDb.child(currentUserId).child("connections").child("matches").child(snapshot.getKey()).child("positionId").setValue(snapshot.getKey());
+
                     usersDb.child(snapshot.getKey()).child("connections").child("matches").child(currentUserId).child("chatId").setValue(key);
                     usersDb.child(currentUserId).child("connections").child("matches").child(snapshot.getKey()).child("chatId").setValue(key);
                 }
@@ -302,7 +337,7 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
 
     public void goToMatches(View view) {
         Intent intent = new Intent(MainActivity.this, MatchesActivity.class);
-//        intent.putExtra("matchId", )
+        intent.putExtra("selectedPositionId", mSelectedPositionId);
         startActivity(intent);
         return;
     }

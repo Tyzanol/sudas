@@ -56,7 +56,6 @@ public class MatchesActivity extends AppCompatActivity {
     }
 
     private void getUserMatchId() {
-
         DatabaseReference matchDb = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("users").child(cusrrentUserID).child("connections").child("matches");
         matchDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

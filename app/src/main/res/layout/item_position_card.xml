@@ -2,17 +2,20 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFEB3B"
     android:orientation="vertical">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="title"
-            android:paddingBottom="20sp"
+            android:textSize="30dp"
+            android:gravity="center"
             android:id="@+id/title"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="location"
-            android:paddingBottom="20sp"
+            android:textSize="30dp"
+            android:gravity="center"
             android:id="@+id/location"/>
 </LinearLayout>

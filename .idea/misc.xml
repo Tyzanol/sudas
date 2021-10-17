@@ -16,13 +16,16 @@
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_matches.xml" value="0.1762208067940552" />
         <entry key="app/src/main/res/layout/activity_my.xml" value="0.171225937183384" />
+        <entry key="app/src/main/res/layout/activity_position.xml" value="0.19739583333333333" />
         <entry key="app/src/main/res/layout/activity_registration.xml" value="0.3536458333333333" />
         <entry key="app/src/main/res/layout/activity_settings.xml" value="0.25" />
         <entry key="app/src/main/res/layout/buttons.xml" value="0.171225937183384" />
         <entry key="app/src/main/res/layout/item.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_chat.xml" value="0.11764705882352941" />
-        <entry key="app/src/main/res/layout/item_matches.xml" value="0.1" />
+        <entry key="app/src/main/res/layout/item_matches.xml" value="0.3875315922493682" />
         <entry key="app/src/main/res/layout/item_position.xml" value="0.19739583333333333" />
+        <entry key="app/src/main/res/layout/item_position_card.xml" value="0.19739583333333333" />
+        <entry key="app/src/main/res/layout/item_positions.xml" value="0.19739583333333333" />
         <entry key="app/src/main/res/layout/positionCard.xml" value="0.3536458333333333" />
         <entry key="app/src/main/res/layout/talentCard.xml" value="0.3536458333333333" />
         <entry key="app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.16296296296296298" />

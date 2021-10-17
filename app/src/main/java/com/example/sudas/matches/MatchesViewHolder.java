@@ -14,6 +14,7 @@ import com.example.sudas.R;
 public class MatchesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
     public TextView mMatchId;
+    public TextView mPositionId;
     public TextView mMatchName;
     public ImageView mMatchImage;
 
@@ -21,6 +22,7 @@ public class MatchesViewHolder extends RecyclerView.ViewHolder implements View.O
         super(itemView);
         itemView.setOnClickListener(this);
         mMatchId = (TextView) itemView.findViewById(R.id.matchId);
+        mPositionId = (TextView) itemView.findViewById(R.id.positionId);
         mMatchName = (TextView) itemView.findViewById(R.id.matchName);
         mMatchImage = (ImageView) itemView.findViewById(R.id.matchImage);    }
     @Override
@@ -28,6 +30,7 @@ public class MatchesViewHolder extends RecyclerView.ViewHolder implements View.O
         Intent intent = new Intent(view.getContext(), ChatActivity.class);
         Bundle b = new Bundle();
         b.putString("matchId", mMatchId.getText().toString());
+        b.putString("positionId", mPositionId.getText().toString());
         intent.putExtras(b);
         view.getContext().startActivity(intent);
     }

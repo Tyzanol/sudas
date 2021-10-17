@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Sudas">
         <activity
+            android:name=".positions.PositionActivity"
+            android:exported="true" />
+        <activity
             android:name=".chat.ChatActivity"
             android:exported="true" />
         <activity

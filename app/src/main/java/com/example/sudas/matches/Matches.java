@@ -2,12 +2,22 @@ package com.example.sudas.matches;
 
 public class Matches {
     private String userId;
+    private String positionId;
     private String name;
     private String profileImageUrl;
     public Matches (String userId, String name, String profileImageUrl){
         this.userId = userId;
+//        this.positionId = positionId;
         this.name = name;
         this.profileImageUrl = profileImageUrl;
+    }
+
+    public String getPositionId() {
+        return positionId;
+    }
+
+    public void setPositionId(String positionId) {
+        this.positionId = positionId;
     }
 
     public String getUserId(){
