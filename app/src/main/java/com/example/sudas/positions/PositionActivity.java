@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.sudas.AddPositionActivity;
+import com.example.sudas.MainActivity;
 import com.example.sudas.R;
 import com.example.sudas.SettingsActivity;
 import com.example.sudas.matches.Matches;
@@ -42,6 +43,7 @@ public class PositionActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        continueToMain();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView1);
         mRecyclerView.setNestedScrollingEnabled(false);
@@ -50,7 +52,7 @@ public class PositionActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mPositionLayoutManager);
         mPositionAdapter = new PositionsAdapter(getPositions(), PositionActivity.this);
         mRecyclerView.setAdapter(mPositionAdapter);
-        FetchPositionInformation();
+//        FetchPositionInformation();
 
         mAddPositionButton = (Button) findViewById(R.id.addPosition);
 
@@ -59,8 +61,30 @@ public class PositionActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(PositionActivity.this, AddPositionActivity.class);
                 startActivity(intent);
+
             }
         });
+    }
+
+    private void continueToMain() {
+        DatabaseReference userDb = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("users").child(currentUserID);
+        userDb.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    if (dataSnapshot.child("userType").getValue().toString().equals("talent")) {
+                        Intent intent = new Intent(PositionActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
     }
 
     private void FetchPositionInformation() {
@@ -98,5 +122,12 @@ public class PositionActivity extends AppCompatActivity {
     private ArrayList<Position> resultPositions = new ArrayList<Position>();
     private List<Position> getPositions() {
         return resultPositions;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        resultPositions.clear();
+        FetchPositionInformation();
     }
 }

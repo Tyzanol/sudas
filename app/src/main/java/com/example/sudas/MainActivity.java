@@ -35,8 +35,7 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
     private positionCardAdapter positionAdapter;
     private int i;
     private FirebaseAuth mAuth;
-    private String currentUserId, mUserType, mSelectedPositionId;
-    ;
+    private String currentUserId, mUserType, mSelectedPositionId, mPositionId;
     ListView listView;
     List<cards> rowItems;
     List<Position> positionRowItems;
@@ -50,6 +49,10 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mAuth = FirebaseAuth.getInstance();
+
+        if (getIntent().hasExtra("positionId")) {
+            mPositionId = getIntent().getExtras().getString("positionId");
+        }
 
         usersDb = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("users");
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
@@ -133,7 +136,7 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
                     case "recruiter":
                         cards obj = (cards) dataObject;
                         String userId = obj.getUserId();
-                        usersDb.child(userId).child("connections").child("interested").child(currentUserId).setValue("true");
+                        usersDb.child(userId).child("connections").child("interested").child(currentUserId).child(mPositionId).setValue("true");
                         isMatch(userId);
                         break;
                 }
@@ -160,7 +163,7 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
     }
 
     private void isPositionMatch(String recruiterId, String positionId) {
-        DatabaseReference currentUserConnectionDb = usersDb.child(recruiterId).child("connections").child("interested").child(currentUserId).child(positionId);
+        DatabaseReference currentUserConnectionDb = usersDb.child(currentUserId).child("connections").child("interested").child(recruiterId).child(positionId);
         currentUserConnectionDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -189,13 +192,13 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
                 if (snapshot.exists()) {
                     String key = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("chats").push().getKey();
 
-//                    usersDb.child(snapshot.getKey()).child("connections").child("matches").child(currentUserId).child("chatId").setValue(key);
-//                    usersDb.child(snapshot.getKey()).child("connections").child("matches").child(currentUserId).child("positionId").setValue(snapshot.getKey());
-//                    usersDb.child(currentUserId).child("connections").child("matches").child(snapshot.getKey()).child("chatId").setValue(key);
-//                    usersDb.child(currentUserId).child("connections").child("matches").child(snapshot.getKey()).child("positionId").setValue(snapshot.getKey());
-
                     usersDb.child(snapshot.getKey()).child("connections").child("matches").child(currentUserId).child("chatId").setValue(key);
+                    usersDb.child(snapshot.getKey()).child("connections").child("matches").child(currentUserId).child(mPositionId).setValue(snapshot.getKey());
                     usersDb.child(currentUserId).child("connections").child("matches").child(snapshot.getKey()).child("chatId").setValue(key);
+                    usersDb.child(currentUserId).child("connections").child("matches").child(snapshot.getKey()).child(mPositionId).setValue(snapshot.getKey());
+
+//                    usersDb.child(snapshot.getKey()).child("connections").child("matches").child(currentUserId).child("chatId").setValue(key);
+//                    usersDb.child(currentUserId).child("connections").child("matches").child(snapshot.getKey()).child("chatId").setValue(key);
                 }
             }
 
