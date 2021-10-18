@@ -31,7 +31,7 @@ public class PositionActivity extends AppCompatActivity {
 
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mPositionAdapter;
-    private RecyclerView.LayoutManager mMatchesLayoutManager;
+    private RecyclerView.LayoutManager mPositionLayoutManager;
     private FirebaseAuth mAuth;
     private String currentUserID;
 
@@ -46,9 +46,11 @@ public class PositionActivity extends AppCompatActivity {
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView1);
         mRecyclerView.setNestedScrollingEnabled(false);
         mRecyclerView.setHasFixedSize(true);
+        mPositionLayoutManager = new LinearLayoutManager(PositionActivity.this);
+        mRecyclerView.setLayoutManager(mPositionLayoutManager);
         mPositionAdapter = new PositionsAdapter(getPositions(), PositionActivity.this);
         mRecyclerView.setAdapter(mPositionAdapter);
-        mRecyclerView.setLayoutManager(mMatchesLayoutManager);
+        FetchPositionInformation();
 
         mAddPositionButton = (Button) findViewById(R.id.addPosition);
 
@@ -59,7 +61,6 @@ public class PositionActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        FetchPositionInformation();
     }
 
     private void FetchPositionInformation() {

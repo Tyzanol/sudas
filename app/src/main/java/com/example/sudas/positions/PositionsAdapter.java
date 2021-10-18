@@ -19,7 +19,6 @@ public class PositionsAdapter extends RecyclerView.Adapter<PositionsViewHolder> 
 
     public PositionsAdapter(List<Position> positionsList, Context context) {
         this.positionsList = positionsList;
-        this.positionsList.add(new Position("a", "b", "1", "2"));
         this.context = context;
     }
 
