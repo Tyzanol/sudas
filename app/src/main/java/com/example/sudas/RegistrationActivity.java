@@ -44,7 +44,7 @@ public class RegistrationActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                         if (user != null) {
-                            Intent intent = new Intent(RegistrationActivity.this, MainActivity.class);
+                            Intent intent = new Intent(RegistrationActivity.this, RecruiterOrTalent.class);
                             startActivity(intent);
                             finish();
                             return;
@@ -56,8 +56,8 @@ public class RegistrationActivity extends AppCompatActivity {
         mEmail = (EditText) findViewById(R.id.email);
         mPassword = (EditText) findViewById(R.id.password);
         mRadioGroup = (RadioGroup) findViewById(R.id.radioGroup);
-        mRadioGroupType = (RadioGroup) findViewById(R.id.radioGroupType);
         mName = (EditText) findViewById(R.id.name);
+//        mRadioGroupType = (RadioGroup) findViewById(R.id.radioGroupType);
 
         mRegister.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,13 +67,11 @@ public class RegistrationActivity extends AppCompatActivity {
                 if (radioButton.getText() == null) {
                     return;
                 }
-
-                int selectedTypeId = mRadioGroup.getCheckedRadioButtonId();
-                final RadioButton radioButtonType = (RadioButton) findViewById(selectedId);
-                if (radioButton.getText() == null) {
-                    return;
-                }
-
+//                int selectedTypeId = mRadioGroup.getCheckedRadioButtonId();
+//                final RadioButton radioButtonType = (RadioButton) findViewById(selectedId);
+//                if (radioButton.getText() == null) {
+//                    return;
+//                }
 
                 final String email = mEmail.getText().toString();
                 final String password = mPassword.getText().toString();
@@ -87,12 +85,14 @@ public class RegistrationActivity extends AppCompatActivity {
                             Toast.makeText(RegistrationActivity.this, "sign up error", Toast.LENGTH_SHORT).show();
                         } else {
                             String userId =  mAuth.getCurrentUser().getUid();
-                            DatabaseReference currentUserDb = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("users").child(userId);
+                            DatabaseReference currentUserDb = FirebaseDatabase.getInstance(Globals.DBAddress).getReference().child("users").child(userId);
                             Map userInfo = new HashMap();
                             userInfo.put("name", name);
                             userInfo.put("gender", radioButton.getText().toString());
-                            userInfo.put("type", radioButtonType.getText().toString());
+//                            userInfo.put("type", radioButtonType.getText().toString());
                             userInfo.put("profileImageUrl", "default");
+                            Map searchRequirements = new HashMap();
+                            userInfo.put("searchRequirements", searchRequirements);
                             currentUserDb.updateChildren(userInfo);
                         }
                     }

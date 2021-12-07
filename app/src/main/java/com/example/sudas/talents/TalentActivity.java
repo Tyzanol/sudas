@@ -1,4 +1,4 @@
-package com.example.sudas;
+package com.example.sudas.talents;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -10,11 +10,14 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.example.sudas.cards.arrayAdapter;
-import com.example.sudas.cards.cards;
+import com.example.sudas.ChooseLoginRegistrationActivity;
+import com.example.sudas.JobParametersActivity;
+import com.example.sudas.R;
+import com.example.sudas.SettingsActivity;
+import com.example.sudas.Globals;
 import com.example.sudas.matches.MatchesActivity;
 import com.example.sudas.positions.Position;
-import com.example.sudas.positions.positionCardAdapter;
+import com.example.sudas.positions.PositionCardAdapter;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -28,20 +31,17 @@ import com.lorentzos.flingswipe.SwipeFlingAdapterView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class TalentActivity extends AppCompatActivity {
 
-//    private ArrayList<String> al;
-private com.example.sudas.cards.arrayAdapter arrayAdapter;
-    private positionCardAdapter positionAdapter;
-    private int i;
+private TalentArrayAdapter TalentArrayAdapter;
+    private PositionCardAdapter positionAdapter;
     private FirebaseAuth mAuth;
     private String currentUserId, mUserType, mSelectedPositionId, mPositionId;
-    ListView listView;
-    List<cards> rowItems;
+    List<Talents> rowItems;
     List<Position> positionRowItems;
 
-    private DatabaseReference usersDb, mDatabaseUserType;
-    SwipeFlingAdapterView flingContainer;
+    private DatabaseReference usersDb, mDatabaseUserType, mDatabasePosition;
+    private DataSnapshot mPositionRequirements;
 
 
     @Override
@@ -52,20 +52,35 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
 
         if (getIntent().hasExtra("positionId")) {
             mPositionId = getIntent().getExtras().getString("positionId");
+            mDatabasePosition = FirebaseDatabase.getInstance(Globals.DBAddress).getReference().child("users").child(currentUserId).child("positions").child(mPositionId);
+            mDatabasePosition.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    if (snapshot.exists()) {
+                        mPositionRequirements = snapshot.child("requirements");
+                    }
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
         }
 
-        usersDb = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("users");
+        usersDb = FirebaseDatabase.getInstance(Globals.DBAddress).getReference().child("users");
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-        rowItems = new ArrayList<cards>();
-        arrayAdapter = new arrayAdapter(this, R.layout.item, rowItems);
+        rowItems = new ArrayList<Talents>();
+        TalentArrayAdapter = new TalentArrayAdapter(this, R.layout.item, rowItems);
 
         positionRowItems = new ArrayList<Position>();
-        positionAdapter = new positionCardAdapter(this, R.layout.item_position_card, positionRowItems);
+        positionAdapter = new PositionCardAdapter(this, R.layout.item_position_card, positionRowItems);
         checkUserPreferences();
 
         SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
-        mDatabaseUserType = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("users").child(currentUserId).child("userType");
+        mDatabaseUserType = FirebaseDatabase.getInstance(Globals.DBAddress).getReference().child("users").child(currentUserId).child("userType");
         mDatabaseUserType.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -76,7 +91,7 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
                             flingContainer.setAdapter(positionAdapter);
                             break;
                         case "recruiter":
-                            flingContainer.setAdapter(arrayAdapter);
+                            flingContainer.setAdapter(TalentArrayAdapter);
                             break;
                     }
                 }
@@ -100,7 +115,7 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
                         break;
                     case "recruiter":
                         rowItems.remove(0);
-                        arrayAdapter.notifyDataSetChanged();
+                        TalentArrayAdapter.notifyDataSetChanged();
                         break;
                 }
             }
@@ -116,7 +131,7 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
                         usersDb.child(recruiterId).child("connections").child(positionId).child("noInterest").child(currentUserId).setValue("true");
                         break;
                     case "recruiter":
-                        cards obj = (cards) dataObject;
+                        Talents obj = (Talents) dataObject;
                         String userId = obj.getUserId();
                         usersDb.child(userId).child("connections").child("noInterest").child(currentUserId).setValue("true");
                         break;
@@ -134,7 +149,7 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
                         isPositionMatch(recruiterId, positionId);
                         break;
                     case "recruiter":
-                        cards obj = (cards) dataObject;
+                        Talents obj = (Talents) dataObject;
                         String userId = obj.getUserId();
                         usersDb.child(userId).child("connections").child("interested").child(currentUserId).child(mPositionId).setValue("true");
                         isMatch(userId);
@@ -156,7 +171,7 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
         flingContainer.setOnItemClickListener(new SwipeFlingAdapterView.OnItemClickListener() {
             @Override
             public void onItemClicked(int itemPosition, Object dataObject) {
-                Toast.makeText(MainActivity.this, "clicked", Toast.LENGTH_SHORT);
+                Toast.makeText(TalentActivity.this, "clicked", Toast.LENGTH_SHORT);
             }
         });
 
@@ -168,7 +183,7 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    String key = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("chats").push().getKey();
+                    String key = FirebaseDatabase.getInstance(Globals.DBAddress).getReference().child("chats").push().getKey();
                     usersDb.child(recruiterId).child("connections").child("matches").child(currentUserId).child("chatId").setValue(key);
                     usersDb.child(recruiterId).child("connections").child("matches").child(currentUserId).child("positionId").setValue(snapshot.getKey());
                     usersDb.child(currentUserId).child("connections").child("matches").child(recruiterId).child("chatId").setValue(key);
@@ -190,7 +205,7 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    String key = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("chats").push().getKey();
+                    String key = FirebaseDatabase.getInstance(Globals.DBAddress).getReference().child("chats").push().getKey();
 
                     usersDb.child(snapshot.getKey()).child("connections").child("matches").child(currentUserId).child("chatId").setValue(key);
                     usersDb.child(snapshot.getKey()).child("connections").child("matches").child(currentUserId).child(mPositionId).setValue(snapshot.getKey());
@@ -211,7 +226,7 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
 
     public void logoutUser(View view) {
         mAuth.signOut();
-        Intent intent = new Intent(MainActivity.this, ChooseLoginRegistrationActivity.class);
+        Intent intent = new Intent(TalentActivity.this, ChooseLoginRegistrationActivity.class);
         startActivity(intent);
     }
 
@@ -250,7 +265,7 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
     }
 
     public void getFilteredTalents() {
-        DatabaseReference usersDb = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("users");
+        DatabaseReference usersDb = FirebaseDatabase.getInstance(Globals.DBAddress).getReference().child("users");
         usersDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -259,16 +274,17 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
                         !snapshot.child("connections").child("noMatch").hasChild(currentUserId) &&
                         snapshot.child("userType").getValue().toString().equals("talent")
                 ) {
-                    String profileImageUrl = "default";
-                    if (!snapshot.child("profileImageUrl").getValue().equals("default")) {
-                        profileImageUrl = snapshot.child("profileImageUrl").getValue().toString();
-                    }
-                    cards item = new cards(snapshot.getKey(),
-                            snapshot.child("name").getValue().toString(),
-                            profileImageUrl
-                    );
-                    rowItems.add(item);
-                    arrayAdapter.notifyDataSetChanged();
+                    if (checksRequirements(snapshot.child("requirements"), mPositionRequirements)) {
+                        String profileImageUrl = "default";
+                        if (!snapshot.child("profileImageUrl").getValue().equals("default")) {
+                            profileImageUrl = snapshot.child("profileImageUrl").getValue().toString();
+                        }
+                        Talents item = new Talents(snapshot.getKey(),
+                                snapshot.child("name").getValue().toString(),
+                                profileImageUrl
+                        );
+                        rowItems.add(item);
+                        TalentArrayAdapter.notifyDataSetChanged();                    }
                 }
             }
             @Override
@@ -287,8 +303,13 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
         });
     }
 
+    private boolean checksPositionRequirements(DataSnapshot requirements, String mPositionId) {
+        //TODO UPDATE!
+        return true;
+    }
+
     public void getFilteredPositions() {
-        DatabaseReference usersDb = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("users");
+        DatabaseReference usersDb = FirebaseDatabase.getInstance(Globals.DBAddress).getReference().child("users");
         usersDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -297,7 +318,7 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
                         !snapshot.child("connections").child("noMatch").hasChild(currentUserId) &&
                         snapshot.child("userType").getValue().toString().equals("recruiter")
                 ) {
-                    String profileImageUrl = "default";
+                        String profileImageUrl = "default";
                     if (!snapshot.child("profileImageUrl").getValue().equals("default")) {
                         profileImageUrl = snapshot.child("profileImageUrl").getValue().toString();
                     }
@@ -305,12 +326,12 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
                     DataSnapshot positions = snapshot.child("positions");
                     if (positions != null) {
                         for (DataSnapshot p: positions.getChildren()) {
-//                        if (checkFilter(p)) {
-                            Position item = new Position(p.child("title").getValue().toString(),
-                                    p.child("location").getValue().toString(), p.child("recruiterId").getValue().toString(), p.getKey());
-                            positionRowItems.add(item);
-                            positionAdapter.notifyDataSetChanged();
-//                        }
+                            if (checksRequirements(snapshot.child("requirements"), p)) {
+                                Position item = new Position(p.child("title").getValue().toString(),
+                                        p.child("location").getValue().toString(), p.child("recruiterId").getValue().toString(), p.getKey());
+                                positionRowItems.add(item);
+                                positionAdapter.notifyDataSetChanged();
+                            }
                         }
                     }
                 }
@@ -331,15 +352,26 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
         });
     }
 
+    private boolean checksRequirements(DataSnapshot requirements, DataSnapshot qualities) {
+        //TODO UPDATE
+        return true;
+    }
+
     public void goToSettings(View view) {
-        Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
+        Intent intent = new Intent(TalentActivity.this, SettingsActivity.class);
         intent.putExtra("userGender", userGender);
         startActivity(intent);
         return;
     }
 
+    public void goToJobParams(View view) {
+        Intent intent = new Intent(TalentActivity.this, JobParametersActivity.class);
+        startActivity(intent);
+        return;
+    }
+
     public void goToMatches(View view) {
-        Intent intent = new Intent(MainActivity.this, MatchesActivity.class);
+        Intent intent = new Intent(TalentActivity.this, MatchesActivity.class);
         intent.putExtra("selectedPositionId", mSelectedPositionId);
         startActivity(intent);
         return;

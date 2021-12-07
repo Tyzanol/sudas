@@ -1,11 +1,11 @@
-package com.example.sudas.cards;
+package com.example.sudas.talents;
 
-public class cards {
+public class Talents {
     private String userId;
     private String name;
     private String profileImageUrl;
 
-    public cards (String userId, String name, String profileImageUrl) {
+    public Talents(String userId, String name, String profileImageUrl) {
         this.userId = userId;
         this.name = name;
         this.profileImageUrl = profileImageUrl;

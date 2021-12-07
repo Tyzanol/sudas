@@ -9,13 +9,8 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.example.sudas.AddPositionActivity;
-import com.example.sudas.MainActivity;
 import com.example.sudas.R;
-import com.example.sudas.SettingsActivity;
-import com.example.sudas.matches.Matches;
-import com.example.sudas.matches.MatchesActivity;
-import com.example.sudas.matches.MatchesAdapter;
+import com.example.sudas.Globals;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -35,15 +30,18 @@ public class PositionActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager mPositionLayoutManager;
     private FirebaseAuth mAuth;
     private String currentUserID;
+    private String mUserType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_position);
 
+        if (getIntent().hasExtra("userType")) {
+            mUserType = getIntent().getExtras().getString("userType");
+        }
         mAuth = FirebaseAuth.getInstance();
         currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        continueToMain();
 
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerView1);
         mRecyclerView.setNestedScrollingEnabled(false);
@@ -52,43 +50,18 @@ public class PositionActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(mPositionLayoutManager);
         mPositionAdapter = new PositionsAdapter(getPositions(), PositionActivity.this);
         mRecyclerView.setAdapter(mPositionAdapter);
-//        FetchPositionInformation();
-
         mAddPositionButton = (Button) findViewById(R.id.addPosition);
-
         mAddPositionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(PositionActivity.this, AddPositionActivity.class);
                 startActivity(intent);
-
             }
         });
-    }
-
-    private void continueToMain() {
-        DatabaseReference userDb = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("users").child(currentUserID);
-        userDb.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (dataSnapshot.exists()){
-                    if (dataSnapshot.child("userType").getValue().toString().equals("talent")) {
-                        Intent intent = new Intent(PositionActivity.this, MainActivity.class);
-                        startActivity(intent);
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
     }
 
     private void FetchPositionInformation() {
-        DatabaseReference positionsDb = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("users").child(currentUserID).child("positions");
+        DatabaseReference positionsDb = FirebaseDatabase.getInstance(Globals.DBAddress).getReference().child("users").child(mUserType).child(currentUserID).child("positions");
         positionsDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.sudas.R;
+import com.example.sudas.Globals;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -75,7 +76,8 @@ public class MatchesActivity extends AppCompatActivity {
     }
 
     private void FetchMatchInformation(String key) {
-        DatabaseReference userDb = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("users").child(key);
+//        DatabaseReference userDb = FirebaseDatabase.getInstance().getReference().child("users").child(key);
+        DatabaseReference userDb = FirebaseDatabase.getInstance(Globals.DBAddress).getReference().child("users").child(key);
         userDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

@@ -7,9 +7,8 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.sudas.MainActivity;
+import com.example.sudas.talents.TalentActivity;
 import com.example.sudas.R;
-import com.example.sudas.chat.ChatActivity;
 
 public class PositionsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
@@ -27,7 +26,7 @@ public class PositionsViewHolder extends RecyclerView.ViewHolder implements View
 
     @Override
     public void onClick(View view) {
-        Intent intent = new Intent(view.getContext(), MainActivity.class);
+        Intent intent = new Intent(view.getContext(), TalentActivity.class);
         Bundle b = new Bundle();
         b.putString("positionId", mPositionId.getText().toString());
         intent.putExtras(b);

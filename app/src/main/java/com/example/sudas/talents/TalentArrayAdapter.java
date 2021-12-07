@@ -1,4 +1,4 @@
-package com.example.sudas.cards;
+package com.example.sudas.talents;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,20 +10,19 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.sudas.R;
-import com.example.sudas.cards.cards;
 
 import java.util.List;
 
-public class arrayAdapter extends ArrayAdapter<cards> {
+public class TalentArrayAdapter extends ArrayAdapter<Talents> {
 
     Context context;
 
-    public arrayAdapter(Context context, int resourceId, List<cards> items) {
+    public TalentArrayAdapter(Context context, int resourceId, List<Talents> items) {
         super(context, resourceId, items);
     }
 
     public View getView(int position, View convertView, ViewGroup parent) {
-        cards card_item = getItem(position);
+        Talents card_item = getItem(position);
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item, parent, false);
         }

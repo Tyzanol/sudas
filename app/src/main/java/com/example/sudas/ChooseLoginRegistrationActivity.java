@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.sudas.positions.PositionActivity;
+import com.example.sudas.talents.TalentActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -59,7 +60,7 @@ public class ChooseLoginRegistrationActivity extends AppCompatActivity {
                 final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null) {
                     retrieveUserType(user);
-                    Intent intent = new Intent(ChooseLoginRegistrationActivity.this, MainActivity.class);
+                    Intent intent = new Intent(ChooseLoginRegistrationActivity.this, TalentActivity.class);
                     switch (mUserType) {
                         case "Talent": {
                             intent = new Intent(ChooseLoginRegistrationActivity.this, PositionActivity.class);
@@ -80,7 +81,8 @@ public class ChooseLoginRegistrationActivity extends AppCompatActivity {
     }
 
     private void retrieveUserType(FirebaseUser user) {
-        DatabaseReference usersDb = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("users");
+//        DatabaseReference usersDb = FirebaseDatabase.getInstance().getReference().child("users");
+        DatabaseReference usersDb = FirebaseDatabase.getInstance(Globals.DBAddress).getReference().child("users");
         DatabaseReference currentUserDb = usersDb.child(user.getUid());
         currentUserDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

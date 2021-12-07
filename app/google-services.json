@@ -1,41 +1,33 @@
 {
   "project_info": {
-    "project_number": "735054918884",
-    "project_id": "sudas-1b8ee",
-    "storage_bucket": "sudas-1b8ee.appspot.com"
+    "project_number": "746058198779",
+    "project_id": "test-40c6d",
+    "storage_bucket": "test-40c6d.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:735054918884:android:60e90889ccf7351962e8f1",
+        "mobilesdk_app_id": "1:746058198779:android:c1568fe9c3cce1f9e78a5e",
         "android_client_info": {
           "package_name": "com.example.sudas"
         }
       },
       "oauth_client": [
         {
-          "client_id": "735054918884-mt72v4r5d6q78orutbv46ec9qhgqnjqq.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.example.sudas",
-            "certificate_hash": "d8ea6204faca00e523ad6a69d7a336c7cc6c8d67"
-          }
-        },
-        {
-          "client_id": "735054918884-j7vmg04qv33qtt0mcafti58ikpej9afd.apps.googleusercontent.com",
+          "client_id": "746058198779-f12uu42tps6umo3c7cjqs0psurbhu52j.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyAJnnPL1yi8-5s_QjCxwqSfTdphVhafR0g"
+          "current_key": "AIzaSyCWD1MYVZcWcIQUlxUry5onSeKKYSsNvtY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "735054918884-j7vmg04qv33qtt0mcafti58ikpej9afd.apps.googleusercontent.com",
+              "client_id": "746058198779-f12uu42tps6umo3c7cjqs0psurbhu52j.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

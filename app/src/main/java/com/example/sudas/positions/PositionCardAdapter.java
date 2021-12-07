@@ -11,11 +11,11 @@ import com.example.sudas.R;
 
 import java.util.List;
 
-public class positionCardAdapter extends ArrayAdapter<Position> {
+public class PositionCardAdapter extends ArrayAdapter<Position> {
 
     Context context;
 
-    public positionCardAdapter(Context context, int resourceId, List<Position> items) {
+    public PositionCardAdapter(Context context, int resourceId, List<Position> items) {
         super(context, resourceId, items);
     }
 
