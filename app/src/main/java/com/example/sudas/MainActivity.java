@@ -54,7 +54,7 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
             mPositionId = getIntent().getExtras().getString("positionId");
         }
 
-        usersDb = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("users");
+        usersDb = FirebaseDatabase.getInstance(Globals.DBAddress).getReference().child("users");
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         rowItems = new ArrayList<cards>();
@@ -65,7 +65,7 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
         checkUserPreferences();
 
         SwipeFlingAdapterView flingContainer = (SwipeFlingAdapterView) findViewById(R.id.frame);
-        mDatabaseUserType = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("users").child(currentUserId).child("userType");
+        mDatabaseUserType = FirebaseDatabase.getInstance(Globals.DBAddress).getReference().child("users").child(currentUserId).child("userType");
         mDatabaseUserType.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -168,7 +168,7 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    String key = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("chats").push().getKey();
+                    String key = FirebaseDatabase.getInstance(Globals.DBAddress).getReference().child("chats").push().getKey();
                     usersDb.child(recruiterId).child("connections").child("matches").child(currentUserId).child("chatId").setValue(key);
                     usersDb.child(recruiterId).child("connections").child("matches").child(currentUserId).child("positionId").setValue(snapshot.getKey());
                     usersDb.child(currentUserId).child("connections").child("matches").child(recruiterId).child("chatId").setValue(key);
@@ -190,7 +190,7 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 if (snapshot.exists()) {
-                    String key = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("chats").push().getKey();
+                    String key = FirebaseDatabase.getInstance(Globals.DBAddress).getReference().child("chats").push().getKey();
 
                     usersDb.child(snapshot.getKey()).child("connections").child("matches").child(currentUserId).child("chatId").setValue(key);
                     usersDb.child(snapshot.getKey()).child("connections").child("matches").child(currentUserId).child(mPositionId).setValue(snapshot.getKey());
@@ -250,7 +250,7 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
     }
 
     public void getFilteredTalents() {
-        DatabaseReference usersDb = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("users");
+        DatabaseReference usersDb = FirebaseDatabase.getInstance(Globals.DBAddress).getReference().child("users");
         usersDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -288,7 +288,7 @@ private com.example.sudas.cards.arrayAdapter arrayAdapter;
     }
 
     public void getFilteredPositions() {
-        DatabaseReference usersDb = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("users");
+        DatabaseReference usersDb = FirebaseDatabase.getInstance(Globals.DBAddress).getReference().child("users");
         usersDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {

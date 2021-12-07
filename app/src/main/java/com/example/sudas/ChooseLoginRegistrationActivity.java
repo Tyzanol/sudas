@@ -80,7 +80,7 @@ public class ChooseLoginRegistrationActivity extends AppCompatActivity {
     }
 
     private void retrieveUserType(FirebaseUser user) {
-        DatabaseReference usersDb = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("users");
+        DatabaseReference usersDb = FirebaseDatabase.getInstance(Globals.DBAddress).getReference().child("users");
         DatabaseReference currentUserDb = usersDb.child(user.getUid());
         currentUserDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override

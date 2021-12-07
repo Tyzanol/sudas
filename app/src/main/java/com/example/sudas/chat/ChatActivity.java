@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.example.sudas.Globals;
 import com.example.sudas.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
@@ -49,8 +50,8 @@ public class ChatActivity extends AppCompatActivity {
         positionId = getIntent().getExtras().getString("positionId");
 
         currentUserID = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        mDatabaseUser = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("users").child(currentUserID).child("connections").child("matches").child(matchId).child("chatId");
-        mDatabaseChat = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("chats");
+        mDatabaseUser = FirebaseDatabase.getInstance(Globals.DBAddress).getReference().child("users").child(currentUserID).child("connections").child("matches").child(matchId).child("chatId");
+        mDatabaseChat = FirebaseDatabase.getInstance(Globals.DBAddress).getReference().child("chats");
         getChatId();
 
         mBack = (Button) findViewById(R.id.chatBack);

@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.sudas.AddPositionActivity;
+import com.example.sudas.Globals;
 import com.example.sudas.MainActivity;
 import com.example.sudas.R;
 import com.example.sudas.SettingsActivity;
@@ -67,7 +68,7 @@ public class PositionActivity extends AppCompatActivity {
     }
 
     private void continueToMain() {
-        DatabaseReference userDb = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("users").child(currentUserID);
+        DatabaseReference userDb = FirebaseDatabase.getInstance(Globals.DBAddress).getReference().child("users").child(currentUserID);
         userDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -88,7 +89,7 @@ public class PositionActivity extends AppCompatActivity {
     }
 
     private void FetchPositionInformation() {
-        DatabaseReference positionsDb = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("users").child(currentUserID).child("positions");
+        DatabaseReference positionsDb = FirebaseDatabase.getInstance(Globals.DBAddress).getReference().child("users").child(currentUserID).child("positions");
         positionsDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {

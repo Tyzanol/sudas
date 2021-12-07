@@ -68,8 +68,8 @@ public class RegistrationActivity extends AppCompatActivity {
                     return;
                 }
 
-                int selectedTypeId = mRadioGroup.getCheckedRadioButtonId();
-                final RadioButton radioButtonType = (RadioButton) findViewById(selectedId);
+                int selectedTypeId = mRadioGroupType.getCheckedRadioButtonId();
+                final RadioButton radioButtonType = (RadioButton) findViewById(selectedTypeId);
                 if (radioButton.getText() == null) {
                     return;
                 }
@@ -87,11 +87,11 @@ public class RegistrationActivity extends AppCompatActivity {
                             Toast.makeText(RegistrationActivity.this, "sign up error", Toast.LENGTH_SHORT).show();
                         } else {
                             String userId =  mAuth.getCurrentUser().getUid();
-                            DatabaseReference currentUserDb = FirebaseDatabase.getInstance("https://sudas-1b8ee-default-rtdb.europe-west1.firebasedatabase.app/").getReference().child("users").child(userId);
+                            DatabaseReference currentUserDb = FirebaseDatabase.getInstance(Globals.DBAddress).getReference().child("users").child(userId);
                             Map userInfo = new HashMap();
                             userInfo.put("name", name);
                             userInfo.put("gender", radioButton.getText().toString());
-                            userInfo.put("type", radioButtonType.getText().toString());
+                            userInfo.put("userType", radioButtonType.getText().toString());
                             userInfo.put("profileImageUrl", "default");
                             currentUserDb.updateChildren(userInfo);
                         }
